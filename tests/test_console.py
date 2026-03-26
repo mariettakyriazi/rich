@@ -6,6 +6,7 @@ import sys
 import tempfile
 from typing import Optional, Tuple, Type, Union
 from unittest import mock
+from rich.table import Table
 
 import pytest
 
@@ -118,6 +119,31 @@ def test_console_options_update_height() -> None:
     assert options.height is None
     assert render_options.height == 12
     assert render_options.max_height == 12
+
+def test_print_emoji_override_propagates_into_table_cells() -> None:
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console(markup=True, emoji=True, record=True, width=120)
+
+    table = Table(show_header=False)
+    table = Table(show_header=False, box=None, padding=(0, 0))
+    table.add_column(width=30, no_wrap=True, overflow="ignore")
+    table.add_column(width=30, no_wrap=True, overflow="ignore")
+    table.add_row("[blue]some text[/blue]", ":warning:")
+    table.add_row("[blue]some text[/blue]", ":warning:")
+
+    # Bug: emoji=False does not propagate into nested strings inside Table cells
+    console.print(table, markup=False, emoji=False)
+
+    output = console.export_text()
+
+    # markup disabled -> tags should remain literal
+    assert "[blue]some text[/blue]" in output
+
+    # emoji disabled -> shortcode should remain literal
+    # (This is what currently FAILS before the fix, because it becomes ⚠️)
+    assert ":warning:" in output
 
 
 def test_init() -> None:
