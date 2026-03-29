@@ -120,6 +120,7 @@ def test_console_options_update_height() -> None:
     assert render_options.height == 12
     assert render_options.max_height == 12
 
+
 def test_print_emoji_override_propagates_into_table_cells() -> None:
     from rich.console import Console
     from rich.table import Table

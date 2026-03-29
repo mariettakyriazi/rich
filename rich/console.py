@@ -1330,9 +1330,9 @@ class Console:
             render_iterable = renderable.__rich_console__(self, _options)
         elif isinstance(renderable, str):
             text_renderable = self.render_str(
-                renderable, 
-                highlight=_options.highlight, 
-                markup=_options.markup, 
+                renderable,
+                highlight=_options.highlight,
+                markup=_options.markup,
                 emoji=_options.emoji,
             )
             render_iterable = text_renderable.__rich_console__(self, _options)
