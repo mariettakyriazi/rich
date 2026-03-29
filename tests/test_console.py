@@ -126,11 +126,9 @@ def test_print_emoji_override_propagates_into_table_cells() -> None:
 
     console = Console(markup=True, emoji=True, record=True, width=120)
 
-    table = Table(show_header=False)
     table = Table(show_header=False, box=None, padding=(0, 0))
     table.add_column(width=30, no_wrap=True, overflow="ignore")
     table.add_column(width=30, no_wrap=True, overflow="ignore")
-    table.add_row("[blue]some text[/blue]", ":warning:")
     table.add_row("[blue]some text[/blue]", ":warning:")
 
     # Bug: emoji=False does not propagate into nested strings inside Table cells
